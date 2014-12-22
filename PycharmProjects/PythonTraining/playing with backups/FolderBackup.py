@@ -12,7 +12,7 @@ replica = sys.argv[2]
 passkey = sys.argv[3]
 
 now = datetime.datetime.now()
-print now.strftime("%Y-%m-%d-%H-%M-%S")
+#print now.strftime("%Y-%m-%d-%H-%M-%S")
 
 dtstamp = now.strftime("-%Y-%m-%d-%H-%M-%S")
 
@@ -26,7 +26,6 @@ ps_copyfolder.wait()
 ps_deletesymlinks = subprocess.Popen(['find', replica, '-type','l', '-delete'])
 ps_deletesymlinks.wait()
 
-
 # compress zip the new backup folder
 ps_zip = subprocess.Popen(['tar', '-azcvf',compress_replica,replica])
 ps_zip.wait()
@@ -34,7 +33,8 @@ ps_zip.wait()
 #openssl #openssl enc -aes-256-cbc -e -in filepath -out filepath.enc -pass pass:passkey
 
 encrypted_file = compress_replica + ".enc"
-ps_passprotect = subprocess.Popen(['openssl', ' enc', '-aes-256-cbc', '-e', '-in',compress_replica, '-out', encrypted_file, '-pass', 'pass:',passkey])
+pk = "pass:"+passkey
+ps_passprotect = subprocess.Popen(['openssl', 'enc', '-aes-256-cbc', '-e', '-in',compress_replica, '-out', encrypted_file, '-pass', pk])
 ps_passprotect.wait()
 
 
