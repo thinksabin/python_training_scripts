@@ -1,0 +1,3 @@
+this is the file 2
+with color purple
+oh! :(
